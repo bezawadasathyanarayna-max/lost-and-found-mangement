@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>My Dashboard | CampusFind</title>
+  <meta name="description" content="Manage your reported lost and found items, view live status, and update records." />
+
+  <!-- CSS Stylesheets -->
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/dark.css" />
+  <link rel="stylesheet" href="css/animations.css" />
+
+  <!-- CDNs -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body>
+
+  <!-- Sticky Navbar -->
+  <header class="navbar">
+    <div class="container">
+      <a href="index.html" class="brand-logo">
+        <div class="brand-icon"><i data-lucide="compass"></i></div>
+        <span>CampusFind</span>
+      </a>
+
+      <nav>
+        <ul class="nav-links">
+          <li><a href="index.html" class="nav-link"><i data-lucide="home"></i> Home</a></li>
+          <li><a href="items.html" class="nav-link"><i data-lucide="grid"></i> Browse Items</a></li>
+          <li><a href="report.html" class="nav-link"><i data-lucide="plus-circle"></i> Report Item</a></li>
+          <li><a href="dashboard.html" class="nav-link active"><i data-lucide="layout-dashboard"></i> My Dashboard</a></li>
+        </ul>
+      </nav>
+
+      <div class="nav-actions" id="nav-actions">
+        <!-- Injected dynamically -->
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main style="padding: 3rem 0 5rem;">
+    <div class="container">
+      <!-- Welcome Header -->
+      <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 2.5rem; flex-wrap: wrap; gap: 1rem;">
+        <div>
+          <span class="section-tag">Member Workspace</span>
+          <h1 style="font-size: 2.25rem; margin-bottom: 0.25rem;">
+            Hello, <span id="dashboard-welcome-name" class="gradient-text">Student</span>
+          </h1>
+          <p>Track your reported campus belongings, mark recovered items, or manage your active listings.</p>
+        </div>
+        <a href="report.html" class="btn btn-primary">
+          <i data-lucide="plus-circle"></i>
+          <span>Report New Item</span>
+        </a>
+      </div>
+
+      <!-- Stats Cards -->
+      <div class="stats-grid" style="margin-bottom: 3rem;">
+        <div class="stat-card">
+          <div class="stat-icon"><i data-lucide="folder"></i></div>
+          <div class="stat-value" id="stat-total">0</div>
+          <div class="stat-label">Total Reports Created</div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-icon" style="color: #3b82f6; background: rgba(59,130,246,0.1);"><i data-lucide="clock"></i></div>
+          <div class="stat-value" id="stat-open">0</div>
+          <div class="stat-label">Active / Open Inquiries</div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-icon" style="color: var(--success-color); background: var(--success-soft);"><i data-lucide="check-circle-2"></i></div>
+          <div class="stat-value" id="stat-resolved">0</div>
+          <div class="stat-label">Reunited / Resolved</div>
+        </div>
+      </div>
+
+      <!-- Reports Filter Tabs -->
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; flex-wrap: wrap; gap: 1rem;">
+        <div class="type-tabs">
+          <button class="type-tab-btn dashboard-filter-tab active" data-status="all">All Reports</button>
+          <button class="type-tab-btn dashboard-filter-tab" data-status="open">Active (Open)</button>
+          <button class="type-tab-btn dashboard-filter-tab" data-status="resolved">Resolved / Claimed</button>
+        </div>
+        <span style="font-size: 0.85rem; color: var(--text-muted);">
+          Tip: Click "Resolve" as soon as an item is returned!
+        </span>
+      </div>
+
+      <!-- My Items Container / Table -->
+      <div id="my-items-container">
+        <!-- Rendered by js/dashboard.js -->
+      </div>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-bottom" style="border:none; padding:0;">
+        <div>&copy; 2026 Campus Lost & Found Management System.</div>
+        <div><a href="items.html">Browse Public Feed</a></div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="js/config.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/ui.js"></script>
+  <script src="js/dashboard.js"></script>
+</body>
+</html>

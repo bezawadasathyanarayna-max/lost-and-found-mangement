@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Create Account | CampusFind</title>
+  <meta name="description" content="Register your student or staff profile for the college lost and found portal." />
+
+  <!-- CSS Stylesheets -->
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/dark.css" />
+  <link rel="stylesheet" href="css/animations.css" />
+
+  <!-- CDNs -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body>
+
+  <!-- Minimal Header -->
+  <header class="navbar">
+    <div class="container">
+      <a href="index.html" class="brand-logo">
+        <div class="brand-icon"><i data-lucide="compass"></i></div>
+        <span>CampusFind</span>
+      </a>
+
+      <div class="nav-actions">
+        <button class="theme-toggle-btn" aria-label="Toggle theme"><i data-lucide="moon"></i></button>
+        <span style="font-size:0.9rem; color:var(--text-secondary);">Already registered?</span>
+        <a href="login.html" class="btn btn-outline btn-sm">Log In</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Split Screen Auth Container -->
+  <div class="auth-page-container">
+    <!-- Hero / Graphic Side -->
+    <div class="auth-hero-side">
+      <div>
+        <div class="brand-logo" style="color:white; margin-bottom:2rem;">
+          <div class="brand-icon" style="background:rgba(255,255,255,0.2); box-shadow:none;"><i data-lucide="user-plus"></i></div>
+          <span>Join Campus Community</span>
+        </div>
+        <h2 style="font-size: 2.5rem; color: white; margin-bottom: 1.25rem; line-height: 1.2;">
+          Protect & Recover Your Belongings.
+        </h2>
+        <p style="font-size: 1.1rem; line-height: 1.6; max-width: 480px;">
+          Create your verified profile to post lost/found notices, contact item reporters, and receive updates in real time.
+        </p>
+      </div>
+
+      <div style="background: rgba(255,255,255,0.1); backdrop-filter: blur(8px); border-radius: var(--radius-lg); padding: 1.5rem; border: 1px solid rgba(255,255,255,0.15);">
+        <div style="display:flex; align-items:center; gap:0.5rem; margin-bottom:0.5rem; font-weight:700;">
+          <i data-lucide="check-circle" style="font-size:1.1rem;"></i>
+          <span>Student Verification</span>
+        </div>
+        <div style="font-size: 0.85rem; line-height: 1.5; color: rgba(255,255,255,0.85);">
+          Please supply your actual College ID / Roll Number to prevent fake submissions and speed up item verification.
+        </div>
+      </div>
+    </div>
+
+    <!-- Form Side -->
+    <div class="auth-form-side" style="padding: 2.5rem 1.5rem;">
+      <div class="auth-form-card" style="max-width: 500px;">
+        <div style="margin-bottom: 1.75rem;">
+          <h2 style="font-size: 1.85rem; margin-bottom: 0.35rem;">Create Account</h2>
+          <p style="font-size: 0.95rem;">Join thousands of students and staff on campus.</p>
+        </div>
+
+        <form id="signup-form" novalidate>
+          <div class="form-group" id="group-fullname">
+            <label for="full_name" class="form-label">Full Name *</label>
+            <input
+              type="text"
+              id="full_name"
+              class="form-control"
+              placeholder="e.g. Rahul Sharma"
+              required
+            />
+            <div class="form-error-msg">Please enter your full name.</div>
+          </div>
+
+          <div class="form-group" id="group-email">
+            <label for="email" class="form-label">College / Personal Email *</label>
+            <input
+              type="email"
+              id="email"
+              class="form-control"
+              placeholder="e.g. student@college.edu"
+              required
+            />
+            <div class="form-error-msg">Please enter a valid email address.</div>
+          </div>
+
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+            <div class="form-group" id="group-roll">
+              <label for="roll_no" class="form-label">Roll No / Campus ID *</label>
+              <input
+                type="text"
+                id="roll_no"
+                class="form-control"
+                placeholder="e.g. 21CS042"
+                required
+              />
+              <div class="form-error-msg">Roll number is required.</div>
+            </div>
+
+            <div class="form-group" id="group-phone">
+              <label for="phone" class="form-label">Phone Number *</label>
+              <input
+                type="tel"
+                id="phone"
+                class="form-control"
+                placeholder="e.g. 9876543210"
+                required
+              />
+              <div class="form-error-msg">Valid phone number required.</div>
+            </div>
+          </div>
+
+          <div class="form-group" id="group-password">
+            <label for="password" class="form-label">Password *</label>
+            <div class="password-toggle-wrapper">
+              <input
+                type="password"
+                id="password"
+                class="form-control"
+                placeholder="At least 6 characters"
+                required
+              />
+              <button type="button" class="password-toggle-btn" id="toggle-signup-password" aria-label="Toggle password">
+                <i data-lucide="eye"></i>
+              </button>
+            </div>
+            <div class="form-error-msg">Password must be at least 6 characters.</div>
+          </div>
+
+          <button type="submit" id="signup-submit-btn" class="btn btn-primary btn-lg" style="width: 100%; margin-top: 0.5rem;">
+            <i data-lucide="user-plus"></i>
+            <span>Register Profile</span>
+          </button>
+        </form>
+
+        <div style="text-align: center; margin-top: 1.5rem; font-size: 0.9rem; color: var(--text-secondary);">
+          Already have an account? <a href="login.html" style="font-weight: 600;">Sign In here</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="js/config.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/ui.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      UI.initTheme();
+      if (window.lucide) lucide.createIcons();
+
+      const form = document.getElementById('signup-form');
+      const fullNameInput = document.getElementById('full_name');
+      const emailInput = document.getElementById('email');
+      const rollNoInput = document.getElementById('roll_no');
+      const phoneInput = document.getElementById('phone');
+      const passwordInput = document.getElementById('password');
+      const toggleBtn = document.getElementById('toggle-signup-password');
+      const submitBtn = document.getElementById('signup-submit-btn');
+
+      toggleBtn.addEventListener('click', () => {
+        const isPassword = passwordInput.type === 'password';
+        passwordInput.type = isPassword ? 'text' : 'password';
+        toggleBtn.innerHTML = `<i data-lucide="${isPassword ? 'eye-off' : 'eye'}"></i>`;
+        if (window.lucide) lucide.createIcons();
+      });
+
+      form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        document.querySelectorAll('.form-group').forEach(g => g.classList.remove('has-error'));
+
+        const fullName = fullNameInput.value.trim();
+        const email = emailInput.value.trim();
+        const rollNo = rollNoInput.value.trim();
+        const phone = phoneInput.value.trim();
+        const password = passwordInput.value;
+
+        let hasError = false;
+        if (!fullName || fullName.length < 2) {
+          document.getElementById('group-fullname').classList.add('has-error');
+          hasError = true;
+        }
+        if (!email || !email.includes('@')) {
+          document.getElementById('group-email').classList.add('has-error');
+          hasError = true;
+        }
+        if (!rollNo) {
+          document.getElementById('group-roll').classList.add('has-error');
+          hasError = true;
+        }
+        if (!phone || phone.length < 7) {
+          document.getElementById('group-phone').classList.add('has-error');
+          hasError = true;
+        }
+        if (!password || password.length < 6) {
+          document.getElementById('group-password').classList.add('has-error');
+          hasError = true;
+        }
+
+        if (hasError) return;
+
+        submitBtn.disabled = true;
+        submitBtn.innerHTML = `<i data-lucide="loader-2" class="spin"></i> Creating Account...`;
+        if (window.lucide) lucide.createIcons();
+
+        try {
+          await Auth.signUp({
+            email,
+            password,
+            fullName,
+            rollNo,
+            phone,
+          });
+
+          UI.showToast('Account Created!', 'Welcome to CampusFind! Redirecting to dashboard...', 'success');
+
+          setTimeout(() => {
+            window.location.href = 'dashboard.html';
+          }, 1200);
+        } catch (err) {
+          console.error('Signup error:', err);
+          UI.showToast('Registration Error', err.message || 'Failed to sign up.', 'error');
+          submitBtn.disabled = false;
+          submitBtn.innerHTML = `<i data-lucide="user-plus"></i> <span>Register Profile</span>`;
+          if (window.lucide) lucide.createIcons();
+        }
+      });
+    });
+  </script>
+</body>
+</html>

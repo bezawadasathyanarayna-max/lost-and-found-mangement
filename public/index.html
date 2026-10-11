@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Lost & Found | Campus Management System</title>
+  <meta name="description" content="Official college campus lost and found portal. Report lost or found laptops, phones, IDs, keys and get reunited quickly." />
+  
+  <!-- CSS Stylesheets -->
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/dark.css" />
+  <link rel="stylesheet" href="css/animations.css" />
+
+  <!-- Supabase CDN & Lucide Icons CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body>
+
+  <!-- Sticky Navbar -->
+  <header class="navbar">
+    <div class="container">
+      <a href="index.html" class="brand-logo">
+        <div class="brand-icon">
+          <i data-lucide="compass"></i>
+        </div>
+        <span>CampusFind</span>
+      </a>
+
+      <nav>
+        <ul class="nav-links">
+          <li><a href="index.html" class="nav-link active"><i data-lucide="home"></i> Home</a></li>
+          <li><a href="items.html" class="nav-link"><i data-lucide="grid"></i> Browse Items</a></li>
+          <li><a href="report.html" class="nav-link"><i data-lucide="plus-circle"></i> Report Item</a></li>
+          <li><a href="dashboard.html" class="nav-link"><i data-lucide="layout-dashboard"></i> My Dashboard</a></li>
+        </ul>
+      </nav>
+
+      <div class="nav-actions" id="nav-actions">
+        <!-- Rendered dynamically by UI.initNavbar() -->
+        <button class="theme-toggle-btn" aria-label="Toggle theme"><i data-lucide="moon"></i></button>
+        <a href="login.html" class="btn btn-outline btn-sm">Log In</a>
+        <a href="signup.html" class="btn btn-primary btn-sm">Sign Up</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="hero">
+    <!-- Floating Badges in Background -->
+    <div class="floating-badge float-top-left floating-item">
+      <div class="floating-icon" style="background:rgba(99,102,241,0.15); color:#6366f1;">
+        <i data-lucide="smartphone"></i>
+      </div>
+      <div>
+        <div style="font-weight:700; font-size:0.85rem;">iPhone 14 Found</div>
+        <div style="font-size:0.75rem; color:var(--text-muted);">Library 2nd Floor</div>
+      </div>
+    </div>
+
+    <div class="floating-badge float-top-right floating-item delay-1">
+      <div class="floating-icon" style="background:rgba(244,63,94,0.15); color:#f43f5e;">
+        <i data-lucide="laptop"></i>
+      </div>
+      <div>
+        <div style="font-weight:700; font-size:0.85rem;">MacBook Air Lost</div>
+        <div style="font-size:0.75rem; color:var(--text-muted);">Seminar Hall A</div>
+      </div>
+    </div>
+
+    <div class="floating-badge float-bottom-left floating-item delay-2">
+      <div class="floating-icon" style="background:rgba(245,158,11,0.15); color:#f59e0b;">
+        <i data-lucide="key"></i>
+      </div>
+      <div>
+        <div style="font-weight:700; font-size:0.85rem;">Bike Keys Reunited</div>
+        <div style="font-size:0.75rem; color:var(--text-muted);">Main Cafeteria</div>
+      </div>
+    </div>
+
+    <div class="floating-badge float-bottom-right floating-item delay-3">
+      <div class="floating-icon" style="background:rgba(16,185,129,0.15); color:#10b981;">
+        <i data-lucide="credit-card"></i>
+      </div>
+      <div>
+        <div style="font-weight:700; font-size:0.85rem;">College ID Claimed</div>
+        <div style="font-size:0.75rem; color:var(--text-muted);">CS Department</div>
+      </div>
+    </div>
+
+    <div class="container">
+      <div class="hero-content">
+        <div class="hero-pill">
+          <i data-lucide="sparkles"></i>
+          <span>Official Campus Lost & Found Network</span>
+        </div>
+
+        <h1 class="hero-title">
+          Lost something on campus?<br />
+          <span class="gradient-text">Let's find it together.</span>
+        </h1>
+
+        <p class="hero-subtitle">
+          Connect instantly with fellow students and staff. Report missing belongings, browse recovered items, and reclaim your essentials safely and securely.
+        </p>
+
+        <div class="hero-actions">
+          <a href="report.html?type=lost" class="btn btn-lost btn-lg">
+            <i data-lucide="search"></i>
+            <span>Report Lost Item</span>
+          </a>
+          <a href="report.html?type=found" class="btn btn-found btn-lg">
+            <i data-lucide="check-circle"></i>
+            <span>Report Found Item</span>
+          </a>
+          <a href="items.html" class="btn btn-secondary btn-lg">
+            <i data-lucide="compass"></i>
+            <span>Browse All Items</span>
+          </a>
+        </div>
+
+        <!-- Hero Showcase Visual -->
+        <div style="margin-top: 3.5rem; position: relative;">
+          <div style="position: absolute; inset: -10px; background: var(--primary-gradient); filter: blur(30px); opacity: 0.25; border-radius: var(--radius-xl); z-index: 1;"></div>
+          <div style="position: relative; z-index: 2; border-radius: var(--radius-xl); overflow: hidden; border: 1px solid var(--glass-border); box-shadow: var(--shadow-xl);">
+            <img src="assets/hero-banner.jpg" alt="Campus Lost and Found Center" style="width: 100%; height: auto; display: block;" />
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Live Stats Counters -->
+  <section class="stats-section">
+    <div class="container">
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-icon"><i data-lucide="box"></i></div>
+          <div class="stat-value" id="counter-total">1,280+</div>
+          <div class="stat-label">Items Reported</div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-icon" style="color:var(--success-color); background:var(--success-soft);"><i data-lucide="heart-handshake"></i></div>
+          <div class="stat-value" id="counter-resolved">890+</div>
+          <div class="stat-label">Successfully Reunited</div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-icon" style="color:var(--accent-color); background:rgba(6,182,212,0.1);"><i data-lucide="users"></i></div>
+          <div class="stat-value" id="counter-students">4,500+</div>
+          <div class="stat-label">Active Campus Members</div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-icon" style="color:#8b5cf6; background:rgba(139,92,246,0.1);"><i data-lucide="clock"></i></div>
+          <div class="stat-value">&lt; 24h</div>
+          <div class="stat-label">Average Claim Time</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- How It Works Section -->
+  <section class="section" style="background:var(--bg-secondary);">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-tag">Simple & Fast</span>
+        <h2 class="section-title">How CampusFind Works</h2>
+        <p>Three straightforward steps to help reunite lost property with their rightful owners.</p>
+      </div>
+
+      <div class="steps-grid">
+        <div class="step-card">
+          <span class="step-number">01</span>
+          <div class="step-icon"><i data-lucide="file-text"></i></div>
+          <h3 class="step-title">Report in 60 Seconds</h3>
+          <p>Post item details, upload a photo, specify location (lab, library, canteen) and add your contact details.</p>
+        </div>
+
+        <div class="step-card">
+          <span class="step-number">02</span>
+          <div class="step-icon" style="background:var(--found-gradient);"><i data-lucide="search"></i></div>
+          <h3 class="step-title">Instant Search & Filter</h3>
+          <p>Search by category, date, or keywords. Verified students can instantly reach out through secured contact channels.</p>
+        </div>
+
+        <div class="step-card">
+          <span class="step-number">03</span>
+          <div class="step-icon" style="background:linear-gradient(135deg, #10b981 0%, #059669 100%);"><i data-lucide="shield-check"></i></div>
+          <h3 class="step-title">Safe Handover & Close</h3>
+          <p>Meet at campus security or designated block, verify ownership details, and mark the report resolved.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Recent Items Preview -->
+  <section class="section">
+    <div class="container">
+      <div style="display:flex; justify-content:space-between; align-items:flex-end; margin-bottom:2.5rem; flex-wrap:wrap; gap:1rem;">
+        <div>
+          <span class="section-tag">Live Feed</span>
+          <h2 class="section-title" style="margin-bottom:0.25rem;">Recently Reported Items</h2>
+          <p>Check out items misplaced or found around campus recently.</p>
+        </div>
+        <a href="items.html" class="btn btn-outline btn-sm">
+          <span>View All Items</span>
+          <i data-lucide="arrow-right"></i>
+        </a>
+      </div>
+
+      <div class="items-grid" id="recent-items-grid">
+        <!-- Rendered dynamically -->
+      </div>
+    </div>
+  </section>
+
+  <!-- Testimonials -->
+  <section class="section" style="background:var(--bg-secondary);">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-tag">Student Stories</span>
+        <h2 class="section-title">Reunited Across Campus</h2>
+        <p>Real feedback from students and faculty who recovered their essential devices and documents.</p>
+      </div>
+
+      <div class="steps-grid">
+        <div class="step-card">
+          <div style="display:flex; align-items:center; gap:0.75rem; margin-bottom:1rem;">
+            <div style="width:44px; height:44px; border-radius:50%; background:var(--primary-gradient); color:white; display:flex; align-items:center; justify-content:center; font-weight:700;">
+              AS
+            </div>
+            <div>
+              <div style="font-weight:700;">Ananya Sharma</div>
+              <div style="font-size:0.8rem; color:var(--text-muted);">Computer Science, 3rd Year</div>
+            </div>
+          </div>
+          <p style="font-style:italic;">"I left my laptop bag in Lab 4 right before midterm exams. Within an hour of posting on CampusFind, a senior contacted me and returned it intact!"</p>
+        </div>
+
+        <div class="step-card">
+          <div style="display:flex; align-items:center; gap:0.75rem; margin-bottom:1rem;">
+            <div style="width:44px; height:44px; border-radius:50%; background:var(--found-gradient); color:white; display:flex; align-items:center; justify-content:center; font-weight:700;">
+              RK
+            </div>
+            <div>
+              <div style="font-weight:700;">Rahul Kumar</div>
+              <div style="font-size:0.8rem; color:var(--text-muted);">Mechanical Engg, 2nd Year</div>
+            </div>
+          </div>
+          <p style="font-style:italic;">"Found a wallet containing college ID and room keys at the basketball court. Uploaded a photo and the owner messaged me in less than 20 minutes."</p>
+        </div>
+
+        <div class="step-card">
+          <div style="display:flex; align-items:center; gap:0.75rem; margin-bottom:1rem;">
+            <div style="width:44px; height:44px; border-radius:50%; background:linear-gradient(135deg, #10b981 0%, #059669 100%); color:white; display:flex; align-items:center; justify-content:center; font-weight:700;">
+              PV
+            </div>
+            <div>
+              <div style="font-weight:700;">Priya Verma</div>
+              <div style="font-size:0.8rem; color:var(--text-muted);">Department of Biotechnology</div>
+            </div>
+          </div>
+          <p style="font-style:italic;">"The dark mode UI and contact protection are brilliant. It makes our whole campus community feel safer and much more connected."</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <a href="index.html" class="brand-logo">
+            <div class="brand-icon"><i data-lucide="compass"></i></div>
+            <span>CampusFind</span>
+          </a>
+          <p>
+            The dedicated lost and found hub engineered for college universities, fostering a trustworthy and helpful campus environment.
+          </p>
+        </div>
+
+        <div>
+          <h4 class="footer-heading">Quick Links</h4>
+          <ul class="footer-links">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="items.html">Browse Items</a></li>
+            <li><a href="report.html?type=lost">Report Lost</a></li>
+            <li><a href="report.html?type=found">Report Found</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <h4 class="footer-heading">Categories</h4>
+          <ul class="footer-links">
+            <li><a href="items.html?category=Phone">Smartphones</a></li>
+            <li><a href="items.html?category=Laptop/System">Laptops & PCs</a></li>
+            <li><a href="items.html?category=ID%20Card">ID Cards</a></li>
+            <li><a href="items.html?category=Keys">Keys & Wallets</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <h4 class="footer-heading">Account</h4>
+          <ul class="footer-links">
+            <li><a href="login.html">Sign In</a></li>
+            <li><a href="signup.html">Register</a></li>
+            <li><a href="dashboard.html">My Dashboard</a></li>
+            <li><a href="admin.html">Staff Portal</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <div>&copy; 2026 Campus Lost & Found Management System. Built for collegiate safety.</div>
+        <div style="display:flex; gap:1.5rem;">
+          <a href="#">Privacy Policy</a>
+          <a href="#">Campus Safety Guidelines</a>
+          <a href="#">Security Desk Helpline</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="js/config.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/ui.js"></script>
+  <script>
+    // Load recent items for index page preview
+    document.addEventListener('DOMContentLoaded', async () => {
+      const grid = document.getElementById('recent-items-grid');
+      UI.renderSkeletons(grid, 3);
+
+      try {
+        const res = await API.getItems({ limit: 3 });
+        const items = res.data || [];
+
+        if (items.length === 0) {
+          grid.innerHTML = `
+            <div class="empty-state" style="grid-column: 1 / -1;">
+              <p>No recent items found. Be the first to report!</p>
+              <a href="report.html" class="btn btn-primary btn-sm" style="margin-top:0.75rem;">Report Now</a>
+            </div>
+          `;
+        } else {
+          grid.innerHTML = items.map(item => {
+            const isLost = item.type === 'lost';
+            const iconName = UI.getCategoryIcon(item.category);
+            const imageHtml = item.image_url 
+              ? `<img src="${item.image_url}" class="item-card-image" alt="${item.title}" />`
+              : `<div class="item-card-image-placeholder"><i data-lucide="${iconName}"></i><span>${item.category}</span></div>`;
+
+            return `
+              <div class="item-card" onclick="window.location.href='items.html?search=${encodeURIComponent(item.title)}'">
+                <div class="item-card-image-wrap">
+                  ${imageHtml}
+                  <div class="item-card-badges">
+                    <span class="badge ${isLost ? 'badge-lost' : 'badge-found'}">${item.type}</span>
+                    <span class="badge badge-${item.status}">${item.status}</span>
+                  </div>
+                </div>
+                <div class="item-card-body">
+                  <div class="item-category-tag"><i data-lucide="${iconName}"></i> ${item.category}</div>
+                  <h3 class="item-title">${item.title}</h3>
+                  <p class="item-desc">${item.description}</p>
+                  <div class="item-meta-list">
+                    <div class="item-meta-item"><i data-lucide="map-pin"></i> ${item.location}</div>
+                    <div class="item-meta-item"><i data-lucide="calendar"></i> ${UI.formatDate(item.event_date)}</div>
+                  </div>
+                </div>
+              </div>
+            `;
+          }).join('');
+        }
+        if (window.lucide) lucide.createIcons();
+      } catch (e) {
+        console.warn('Could not load recent items:', e);
+      }
+    });
+  </script>
+</body>
+</html>

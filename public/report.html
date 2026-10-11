@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Report an Item | CampusFind</title>
+  <meta name="description" content="Report a lost or found item on campus. Provide description, location, and photos to connect with the owner." />
+
+  <!-- CSS Stylesheets -->
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/dark.css" />
+  <link rel="stylesheet" href="css/animations.css" />
+
+  <!-- CDNs -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body>
+
+  <!-- Sticky Navbar -->
+  <header class="navbar">
+    <div class="container">
+      <a href="index.html" class="brand-logo">
+        <div class="brand-icon"><i data-lucide="compass"></i></div>
+        <span>CampusFind</span>
+      </a>
+
+      <nav>
+        <ul class="nav-links">
+          <li><a href="index.html" class="nav-link"><i data-lucide="home"></i> Home</a></li>
+          <li><a href="items.html" class="nav-link"><i data-lucide="grid"></i> Browse Items</a></li>
+          <li><a href="report.html" class="nav-link active"><i data-lucide="plus-circle"></i> Report Item</a></li>
+          <li><a href="dashboard.html" class="nav-link"><i data-lucide="layout-dashboard"></i> My Dashboard</a></li>
+        </ul>
+      </nav>
+
+      <div class="nav-actions" id="nav-actions">
+        <!-- Rendered dynamically -->
+      </div>
+    </div>
+  </header>
+
+  <!-- Report Form Container -->
+  <main style="padding: 3rem 0 5rem;">
+    <div class="container" style="max-width: 800px;">
+      <div style="text-align: center; margin-bottom: 2.5rem;">
+        <span class="section-tag">Campus Registry</span>
+        <h1 id="report-title-heading" style="font-size: 2.3rem; margin-bottom: 0.5rem;">
+          Report a <span class="gradient-text">Lost</span> Item
+        </h1>
+        <p>Please enter accurate details so your peers or security personnel can verify and locate the item.</p>
+      </div>
+
+      <div style="background: var(--bg-card); backdrop-filter: blur(16px); border: 1px solid var(--border-color); border-radius: var(--radius-xl); padding: 2.5rem; box-shadow: var(--shadow-lg);">
+        <form id="report-form" novalidate>
+          <!-- 1. Type Selection (Lost vs Found) -->
+          <label class="form-label" style="margin-bottom: 0.75rem;">What would you like to report?</label>
+          <div class="type-radio-cards">
+            <div class="type-radio-card active-lost" data-type="lost">
+              <input type="radio" name="item_type" value="lost" checked />
+              <div class="type-radio-icon" style="background: var(--lost-soft); color: var(--lost-color);">
+                <i data-lucide="help-circle"></i>
+              </div>
+              <div style="font-weight: 700; font-size: 1.05rem; margin-bottom: 2px;">I Lost Something</div>
+              <div style="font-size: 0.8rem; color: var(--text-muted);">Looking for my misplaced belongings</div>
+            </div>
+
+            <div class="type-radio-card" data-type="found">
+              <input type="radio" name="item_type" value="found" />
+              <div class="type-radio-icon" style="background: var(--found-soft); color: var(--found-color);">
+                <i data-lucide="check-circle-2"></i>
+              </div>
+              <div style="font-weight: 700; font-size: 1.05rem; margin-bottom: 2px;">I Found Something</div>
+              <div style="font-size: 0.8rem; color: var(--text-muted);">Looking to return an item to its owner</div>
+            </div>
+          </div>
+
+          <!-- 2. Title & Category -->
+          <div style="display: grid; grid-template-columns: 1.4fr 1fr; gap: 1.25rem;">
+            <div class="form-group">
+              <label for="item-title" class="form-label">Item Title *</label>
+              <input
+                type="text"
+                id="item-title"
+                class="form-control"
+                placeholder="e.g. Blue Dell Inspiron 15 Laptop"
+                required
+              />
+              <div class="form-error-msg">Please enter a descriptive title.</div>
+            </div>
+
+            <div class="form-group">
+              <label for="item-category" class="form-label">Category *</label>
+              <select id="item-category" class="form-control" required>
+                <!-- Populated by js/report.js -->
+              </select>
+              <div class="form-error-msg">Please select an item category.</div>
+            </div>
+          </div>
+
+          <!-- 3. Location & Date -->
+          <div style="display: grid; grid-template-columns: 1.4fr 1fr; gap: 1.25rem;">
+            <div class="form-group">
+              <label for="item-location" class="form-label">Campus Location *</label>
+              <input
+                type="text"
+                id="item-location"
+                class="form-control"
+                placeholder="e.g. Central Library, 2nd Floor Study Room 204"
+                required
+              />
+              <div class="form-error-msg">Please enter the specific college spot.</div>
+            </div>
+
+            <div class="form-group">
+              <label for="event-date" class="form-label">Incident Date *</label>
+              <input type="date" id="event-date" class="form-control" required />
+              <div class="form-error-msg">Please choose the date.</div>
+            </div>
+          </div>
+
+          <!-- 4. Contact Phone -->
+          <div class="form-group">
+            <label for="contact-phone" class="form-label">Contact Phone / WhatsApp *</label>
+            <input
+              type="tel"
+              id="contact-phone"
+              class="form-control"
+              placeholder="e.g. +91 9876543210"
+              required
+            />
+            <div style="font-size: 0.8rem; color: var(--text-muted); margin-top: 4px;">
+              🔒 Only verified logged-in campus members can view this contact number.
+            </div>
+            <div class="form-error-msg">Please provide a valid contact number.</div>
+          </div>
+
+          <!-- 5. Description -->
+          <div class="form-group">
+            <label for="item-description" class="form-label">Detailed Description *</label>
+            <textarea
+              id="item-description"
+              class="form-control"
+              placeholder="Include distinguishing traits: stickers, scratches, case color, brand, contents, or room number..."
+              required
+            ></textarea>
+            <div class="form-error-msg">Please provide a descriptive summary.</div>
+          </div>
+
+          <!-- 6. Image Upload Dropzone -->
+          <div class="form-group">
+            <label class="form-label">Item Photograph (Optional, Recommended)</label>
+            <div class="dropzone-container" id="image-dropzone">
+              <input type="file" id="image-file-input" accept="image/*" style="display: none;" />
+              <div class="dropzone-prompt">
+                <div class="dropzone-icon"><i data-lucide="image-plus"></i></div>
+                <div style="font-weight: 600; font-size: 1rem; margin-bottom: 2px;">
+                  Click to upload or drag & drop photo here
+                </div>
+                <div style="font-size: 0.8rem; color: var(--text-muted);">
+                  PNG, JPG, or WEBP up to 5MB
+                </div>
+              </div>
+
+              <!-- Preview Wrap -->
+              <div class="dropzone-preview-wrap" id="image-preview-wrap">
+                <img id="image-preview" src="" alt="Selected Preview" />
+                <button type="button" class="dropzone-remove-btn" id="remove-image-btn" title="Remove photo">
+                  <i data-lucide="x"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Submit Button -->
+          <div style="margin-top: 2rem;">
+            <button type="submit" id="submit-btn" class="btn btn-primary btn-lg" style="width: 100%;">
+              <i data-lucide="send"></i>
+              <span>Publish Report</span>
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-bottom" style="border:none; padding:0;">
+        <div>&copy; 2026 Campus Lost & Found Management System.</div>
+        <div><a href="items.html">Return to items feed</a></div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="js/config.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/ui.js"></script>
+  <script src="js/report.js"></script>
+</body>
+</html>

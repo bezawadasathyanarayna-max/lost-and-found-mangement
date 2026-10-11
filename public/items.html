@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Browse Lost & Found Items | CampusFind</title>
+  <meta name="description" content="Explore lost and found items reported across campus. Search by keyword, filter by category, and connect with item finders or owners." />
+
+  <!-- CSS Stylesheets -->
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/dark.css" />
+  <link rel="stylesheet" href="css/animations.css" />
+
+  <!-- CDNs -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body>
+
+  <!-- Sticky Navbar -->
+  <header class="navbar">
+    <div class="container">
+      <a href="index.html" class="brand-logo">
+        <div class="brand-icon"><i data-lucide="compass"></i></div>
+        <span>CampusFind</span>
+      </a>
+
+      <nav>
+        <ul class="nav-links">
+          <li><a href="index.html" class="nav-link"><i data-lucide="home"></i> Home</a></li>
+          <li><a href="items.html" class="nav-link active"><i data-lucide="grid"></i> Browse Items</a></li>
+          <li><a href="report.html" class="nav-link"><i data-lucide="plus-circle"></i> Report Item</a></li>
+          <li><a href="dashboard.html" class="nav-link"><i data-lucide="layout-dashboard"></i> My Dashboard</a></li>
+        </ul>
+      </nav>
+
+      <div class="nav-actions" id="nav-actions">
+        <!-- Injected dynamically -->
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main style="padding: 2.5rem 0 5rem;">
+    <div class="container">
+      <!-- Page Title & Header -->
+      <div style="margin-bottom: 2rem;">
+        <h1 style="font-size: 2.25rem; margin-bottom: 0.5rem;">Campus Belongings Feed</h1>
+        <p>Search, discover, and filter all misplaced or found items reported around college premises.</p>
+      </div>
+
+      <!-- Filter & Search Controls Bar -->
+      <div class="filter-bar">
+        <!-- Search bar -->
+        <div class="search-input-wrapper">
+          <i data-lucide="search"></i>
+          <input
+            type="text"
+            id="search-input"
+            class="search-input"
+            placeholder="Search by keywords (e.g. 'blue wallet', 'Dell XPS', 'canteen', 'keys')..."
+            aria-label="Search items"
+          />
+        </div>
+
+        <!-- Filter Row -->
+        <div class="filter-row">
+          <!-- Type Tabs -->
+          <div class="type-tabs">
+            <button class="type-tab-btn active" data-type="all">All Items</button>
+            <button class="type-tab-btn" data-type="lost">Lost</button>
+            <button class="type-tab-btn" data-type="found">Found</button>
+          </div>
+
+          <!-- Dropdowns -->
+          <div class="filter-dropdowns">
+            <!-- Category Filter -->
+            <select id="category-filter" class="custom-select" aria-label="Filter by category">
+              <option value="All">All Categories</option>
+              <option value="Phone">Phone</option>
+              <option value="Laptop/System">Laptop / System</option>
+              <option value="Wallet">Wallet</option>
+              <option value="ID Card">ID Card</option>
+              <option value="Keys">Keys</option>
+              <option value="Books">Books</option>
+              <option value="Bag">Bag</option>
+              <option value="Earphones">Earphones</option>
+              <option value="Watch">Watch</option>
+              <option value="Other">Other</option>
+            </select>
+
+            <!-- Status Filter -->
+            <select id="status-filter" class="custom-select" aria-label="Filter by status">
+              <option value="All">All Statuses</option>
+              <option value="open">Open</option>
+              <option value="claimed">Claimed</option>
+              <option value="resolved">Resolved</option>
+            </select>
+
+            <!-- Date Filter -->
+            <input type="date" id="date-filter" class="custom-select" aria-label="Filter by date" title="Filter by incident date" />
+          </div>
+        </div>
+      </div>
+
+      <!-- Feed Status Bar -->
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; font-size: 0.9rem; color: var(--text-secondary);">
+        <div id="results-count">Loading items...</div>
+        <div style="display: flex; align-items: center; gap: 0.5rem;">
+          <i data-lucide="arrow-down-up" style="font-size: 0.85rem;"></i>
+          <span>Sorted: Newest First</span>
+        </div>
+      </div>
+
+      <!-- Items Grid -->
+      <div class="items-grid" id="items-grid">
+        <!-- Rendered dynamically by js/items.js -->
+      </div>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-bottom" style="border:none; padding:0;">
+        <div>&copy; 2026 Campus Lost & Found Management System.</div>
+        <div>
+          <a href="report.html" class="btn btn-primary btn-sm">Report Missing Item</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="js/config.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/ui.js"></script>
+  <script src="js/items.js"></script>
+</body>
+</html>

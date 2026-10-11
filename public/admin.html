@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin Moderation Portal | CampusFind</title>
+  <meta name="description" content="Campus administrator panel for monitoring reports, statistics, and item moderation." />
+
+  <!-- CSS Stylesheets -->
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/dark.css" />
+  <link rel="stylesheet" href="css/animations.css" />
+
+  <!-- CDNs -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body>
+
+  <!-- Sticky Navbar -->
+  <header class="navbar">
+    <div class="container">
+      <a href="index.html" class="brand-logo">
+        <div class="brand-icon" style="background: linear-gradient(135deg, #f43f5e 0%, #7c3aed 100%);">
+          <i data-lucide="shield-alert"></i>
+        </div>
+        <span>CampusFind <span style="font-size: 0.75rem; background: var(--lost-soft); color: var(--lost-color); padding: 2px 6px; border-radius: 4px; margin-left: 4px;">ADMIN</span></span>
+      </a>
+
+      <nav>
+        <ul class="nav-links">
+          <li><a href="index.html" class="nav-link"><i data-lucide="home"></i> Home</a></li>
+          <li><a href="items.html" class="nav-link"><i data-lucide="grid"></i> Public Feed</a></li>
+          <li><a href="dashboard.html" class="nav-link"><i data-lucide="layout-dashboard"></i> My Dashboard</a></li>
+          <li><a href="admin.html" class="nav-link active"><i data-lucide="shield-check"></i> Admin Portal</a></li>
+        </ul>
+      </nav>
+
+      <div class="nav-actions" id="nav-actions">
+        <!-- Injected dynamically -->
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main style="padding: 3rem 0 5rem;">
+    <div class="container">
+      <!-- Admin Header -->
+      <div style="margin-bottom: 2.5rem;">
+        <span class="section-tag" style="color: var(--lost-color);">Security & Moderation</span>
+        <h1 style="font-size: 2.25rem; margin-bottom: 0.5rem;">Campus Administration Panel</h1>
+        <p>Monitor platform statistics, moderate reported items, resolve disputes, and purge spam submissions.</p>
+      </div>
+
+      <!-- Stats Grid -->
+      <div class="stats-grid" style="margin-bottom: 3rem;">
+        <div class="stat-card">
+          <div class="stat-icon" style="color: var(--primary-color); background: var(--primary-soft);">
+            <i data-lucide="users"></i>
+          </div>
+          <div class="stat-value" id="admin-stat-users">0</div>
+          <div class="stat-label">Total Users</div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-icon" style="color: #6366f1; background: rgba(99,102,241,0.1);">
+            <i data-lucide="folder-kanban"></i>
+          </div>
+          <div class="stat-value" id="admin-stat-reports">0</div>
+          <div class="stat-label">Total Reports</div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-icon" style="color: var(--lost-color); background: var(--lost-soft);">
+            <i data-lucide="help-circle"></i>
+          </div>
+          <div class="stat-value" id="admin-stat-lost">0</div>
+          <div class="stat-label">Lost Items</div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-icon" style="color: var(--found-color); background: var(--found-soft);">
+            <i data-lucide="check-circle-2"></i>
+          </div>
+          <div class="stat-value" id="admin-stat-found">0</div>
+          <div class="stat-label">Found Items</div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-icon" style="color: var(--success-color); background: var(--success-soft);">
+            <i data-lucide="shield-check"></i>
+          </div>
+          <div class="stat-value" id="admin-stat-resolved">0</div>
+          <div class="stat-label">Reunited / Resolved</div>
+        </div>
+      </div>
+
+      <!-- Moderation Controls & Filter -->
+      <div class="filter-bar">
+        <div class="search-input-wrapper">
+          <i data-lucide="search"></i>
+          <input
+            type="text"
+            id="admin-search"
+            class="search-input"
+            placeholder="Search by student name, roll number, title, or place..."
+          />
+        </div>
+
+        <div class="filter-row">
+          <div style="font-weight: 600; font-size: 0.95rem; color: var(--text-primary);">
+            All Campus Records Moderation
+          </div>
+
+          <div class="filter-dropdowns">
+            <select id="admin-type-filter" class="custom-select">
+              <option value="all">All Types</option>
+              <option value="lost">Lost</option>
+              <option value="found">Found</option>
+            </select>
+
+            <select id="admin-status-filter" class="custom-select">
+              <option value="All">All Statuses</option>
+              <option value="open">Open</option>
+              <option value="claimed">Claimed</option>
+              <option value="resolved">Resolved</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <!-- Table Container -->
+      <div id="admin-items-table-container">
+        <!-- Rendered by js/admin.js -->
+      </div>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-bottom" style="border:none; padding:0;">
+        <div>&copy; 2026 Campus Lost & Found Management System. Restricted Admin Console.</div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="js/config.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/ui.js"></script>
+  <script src="js/admin.js"></script>
+</body>
+</html>

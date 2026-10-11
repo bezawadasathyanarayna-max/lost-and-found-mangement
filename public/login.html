@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sign In | CampusFind</title>
+  <meta name="description" content="Sign in to your college campus lost and found account." />
+
+  <!-- CSS Stylesheets -->
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/dark.css" />
+  <link rel="stylesheet" href="css/animations.css" />
+
+  <!-- CDNs -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body>
+
+  <!-- Minimal Header -->
+  <header class="navbar">
+    <div class="container">
+      <a href="index.html" class="brand-logo">
+        <div class="brand-icon"><i data-lucide="compass"></i></div>
+        <span>CampusFind</span>
+      </a>
+
+      <div class="nav-actions">
+        <button class="theme-toggle-btn" aria-label="Toggle theme"><i data-lucide="moon"></i></button>
+        <span style="font-size:0.9rem; color:var(--text-secondary);">New to CampusFind?</span>
+        <a href="signup.html" class="btn btn-outline btn-sm">Sign Up</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Split Screen Auth Container -->
+  <div class="auth-page-container">
+    <!-- Hero / Illustration Side -->
+    <div class="auth-hero-side">
+      <div>
+        <div class="brand-logo" style="color:white; margin-bottom:2rem;">
+          <div class="brand-icon" style="background:rgba(255,255,255,0.2); box-shadow:none;"><i data-lucide="shield-check"></i></div>
+          <span>Campus Security Network</span>
+        </div>
+        <h2 style="font-size: 2.5rem; color: white; margin-bottom: 1.25rem; line-height: 1.2;">
+          Welcome Back to CampusFind.
+        </h2>
+        <p style="font-size: 1.1rem; line-height: 1.6; max-width: 480px;">
+          Access your reported items, check claim updates, and communicate securely with fellow campus students and faculty.
+        </p>
+      </div>
+
+      <div style="background: rgba(255,255,255,0.1); backdrop-filter: blur(8px); border-radius: var(--radius-lg); padding: 1.5rem; border: 1px solid rgba(255,255,255,0.15);">
+        <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem; font-weight: 700;">
+          <i data-lucide="lock" style="font-size: 1.1rem;"></i>
+          <span>Campus-Verified Protection</span>
+        </div>
+        <div style="font-size: 0.85rem; line-height: 1.5; color: rgba(255,255,255,0.85);">
+          All phone numbers and sensitive contact details are encrypted and concealed from public search engines.
+        </div>
+      </div>
+    </div>
+
+    <!-- Form Side -->
+    <div class="auth-form-side">
+      <div class="auth-form-card">
+        <div style="margin-bottom: 2rem;">
+          <h2 style="font-size: 1.85rem; margin-bottom: 0.5rem;">Sign In</h2>
+          <p style="font-size: 0.95rem;">Enter your campus credentials to continue.</p>
+        </div>
+
+        <form id="login-form" novalidate>
+          <div class="form-group" id="group-email">
+            <label for="email" class="form-label">College Email Address *</label>
+            <input
+              type="email"
+              id="email"
+              class="form-control"
+              placeholder="student@college.edu"
+              required
+              autocomplete="email"
+            />
+            <div class="form-error-msg" id="err-email">Please enter a valid email address.</div>
+          </div>
+
+          <div class="form-group" id="group-password">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+              <label for="password" class="form-label" style="margin-bottom: 0;">Password *</label>
+            </div>
+            <div class="password-toggle-wrapper">
+              <input
+                type="password"
+                id="password"
+                class="form-control"
+                placeholder="••••••••"
+                required
+                autocomplete="current-password"
+              />
+              <button type="button" class="password-toggle-btn" id="toggle-password" aria-label="Toggle password visibility">
+                <i data-lucide="eye"></i>
+              </button>
+            </div>
+            <div class="form-error-msg" id="err-password">Password is required.</div>
+          </div>
+
+          <div style="margin-bottom: 1.5rem; display: flex; align-items: center; justify-content: space-between; font-size: 0.85rem;">
+            <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer; color: var(--text-secondary);">
+              <input type="checkbox" id="remember-me" checked />
+              <span>Remember this session</span>
+            </label>
+          </div>
+
+          <button type="submit" id="login-submit-btn" class="btn btn-primary btn-lg" style="width: 100%;">
+            <i data-lucide="log-in"></i>
+            <span>Sign In</span>
+          </button>
+        </form>
+
+        <div style="text-align: center; margin-top: 1.75rem; font-size: 0.9rem; color: var(--text-secondary);">
+          Don't have an account yet? <a href="signup.html" style="font-weight: 600;">Create an account</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="js/config.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/ui.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      UI.initTheme();
+      if (window.lucide) lucide.createIcons();
+
+      const form = document.getElementById('login-form');
+      const emailInput = document.getElementById('email');
+      const passwordInput = document.getElementById('password');
+      const toggleBtn = document.getElementById('toggle-password');
+      const submitBtn = document.getElementById('login-submit-btn');
+
+      // Password visibility toggle
+      toggleBtn.addEventListener('click', () => {
+        const isPassword = passwordInput.type === 'password';
+        passwordInput.type = isPassword ? 'text' : 'password';
+        toggleBtn.innerHTML = `<i data-lucide="${isPassword ? 'eye-off' : 'eye'}"></i>`;
+        if (window.lucide) lucide.createIcons();
+      });
+
+      // Form submit handler
+      form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        document.querySelectorAll('.form-group').forEach(g => g.classList.remove('has-error'));
+
+        const email = emailInput.value.trim();
+        const password = passwordInput.value;
+
+        let hasError = false;
+        if (!email || !email.includes('@')) {
+          document.getElementById('group-email').classList.add('has-error');
+          hasError = true;
+        }
+        if (!password) {
+          document.getElementById('group-password').classList.add('has-error');
+          hasError = true;
+        }
+
+        if (hasError) return;
+
+        submitBtn.disabled = true;
+        submitBtn.innerHTML = `<i data-lucide="loader-2" class="spin"></i> Signing In...`;
+        if (window.lucide) lucide.createIcons();
+
+        try {
+          await Auth.signIn({ email, password });
+          UI.showToast('Welcome Back!', 'Logged in successfully.', 'success');
+
+          const urlParams = new URLSearchParams(window.location.search);
+          const nextUrl = urlParams.get('next');
+          
+          setTimeout(() => {
+            window.location.href = nextUrl ? decodeURIComponent(nextUrl) : 'dashboard.html';
+          }, 800);
+        } catch (err) {
+          console.error('Login error:', err);
+          UI.showToast('Login Failed', err.message || 'Invalid email or password.', 'error');
+          submitBtn.disabled = false;
+          submitBtn.innerHTML = `<i data-lucide="log-in"></i> <span>Sign In</span>`;
+          if (window.lucide) lucide.createIcons();
+        }
+      });
+    });
+  </script>
+</body>
+</html>
