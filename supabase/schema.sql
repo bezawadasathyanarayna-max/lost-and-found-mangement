@@ -9,7 +9,7 @@ CREATE EXTENSION IF NOT EXISTS "pgcrypto";
 -- 1. PROFILES TABLE
 CREATE TABLE IF NOT EXISTS public.profiles (
     id UUID PRIMARY KEY REFERENCES auth.users(id) ON DELETE CASCADE,
-    full_name TEXT N--OT NULL,
+    full_name TEXT NOT NULL,
     roll_no TEXT,
     phone TEXT,
     role TEXT NOT NULL DEFAULT 'user' CHECK (role IN ('user', 'admin')),

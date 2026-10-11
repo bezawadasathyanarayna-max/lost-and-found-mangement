@@ -95,6 +95,7 @@ lost-and-found/
    - Sets up automatic profile creation via PostgreSQL triggers on signup (`auth.users -> profiles`).
    - Enables Row Level Security (RLS) policies.
    - Creates the `item-images` storage bucket with public-read and authenticated-upload permissions.
+   - If email confirmation is enabled in Supabase, new users must confirm their email before signing in.
 
 ---
 

@@ -214,7 +214,7 @@
         if (window.lucide) lucide.createIcons();
 
         try {
-          await Auth.signUp({
+          const result = await Auth.signUp({
             email,
             password,
             fullName,
@@ -222,11 +222,19 @@
             phone,
           });
 
-          UI.showToast('Account Created!', 'Welcome to CampusFind! Redirecting to dashboard...', 'success');
+          const hasSession = Boolean(result.session || result.token);
+          UI.showToast(
+            hasSession ? 'Account Created!' : 'Confirm Your Email',
+            hasSession
+              ? 'Welcome to CampusFind! Redirecting to dashboard...'
+              : 'Your account was created. Check your email for the confirmation link, then sign in.',
+            'success',
+            6000
+          );
 
           setTimeout(() => {
-            window.location.href = 'dashboard.html';
-          }, 1200);
+            window.location.href = hasSession ? 'dashboard.html' : 'login.html';
+          }, hasSession ? 1200 : 2500);
         } catch (err) {
           console.error('Signup error:', err);
           UI.showToast('Registration Error', err.message || 'Failed to sign up.', 'error');

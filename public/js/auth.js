@@ -46,37 +46,40 @@ const Auth = {
    * Sign up a new user with email, password, and campus metadata
    */
   async signUp({ email, password, fullName, rollNo, phone }) {
-    // 1. If real Supabase is configured, attempt Supabase Auth
-    if (isSupabaseConfigured()) {
-      try {
-        const sb = getSupabase();
-        if (sb) {
-          const { data, error } = await sb.auth.signUp({
-            email,
-            password,
-            options: {
-              data: {
-                full_name: fullName,
-                roll_no: rollNo,
-                phone: phone,
-                role: 'user',
-              },
-            },
-          });
-
-          if (!error && data?.user) {
-            return data;
-          }
-          if (error && !error.message?.includes('fetch')) {
-            throw error;
-          }
-        }
-      } catch (sbErr) {
-        console.warn('Supabase signup attempt failed, falling back to local signup:', sbErr);
-      }
+    if (window.CONFIG?.syncServerConfig) {
+      await window.CONFIG.syncServerConfig();
     }
 
-    // 2. Local Fallback via Express API
+    // Use local registration only when Supabase is not configured.
+    if (isSupabaseConfigured()) {
+      const sb = getSupabase();
+      if (!sb) {
+        throw new Error('Unable to initialize the account service. Please refresh and try again.');
+      }
+
+      const { data, error } = await sb.auth.signUp({
+        email,
+        password,
+        options: {
+          data: {
+            full_name: fullName,
+            roll_no: rollNo,
+            phone,
+            role: 'user',
+          },
+        },
+      });
+
+      if (error) {
+        throw new Error(error.message);
+      }
+      if (!data?.user) {
+        throw new Error('The account service did not return a new user. Please try again.');
+      }
+      return data;
+    }
+
+    // Local fallback for development without Supabase.
     const response = await fetch(`${window.CONFIG.API_BASE}/auth/signup`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
